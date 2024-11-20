@@ -1,0 +1,6 @@
+dependencies:
+- name: nginx-ingress
+  repository: https://helm.nginx.com/stable
+  version: 0.10.0
+digest: sha256:b141f3fef708e35fe64eac072b14deb5ec1f373a42f45d5c996e16f5d49668d5
+generated: "2024-11-18T17:19:55.612163Z"

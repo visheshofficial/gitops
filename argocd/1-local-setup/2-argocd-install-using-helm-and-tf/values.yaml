@@ -1,0 +1,11 @@
+# configs:
+#   clusterCredentials: {}
+#   cm:
+#     admin.enabled: true
+server:
+  ingress:
+    enabled: true
+    hostname: argocd.upandrunning.local
+    ingressClassName: nginx
+  extraArgs:
+    - --insecure
