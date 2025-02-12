@@ -1,7 +1,26 @@
-# configs:
-#   clusterCredentials: {}
-#   cm:
-#     admin.enabled: true
+configs:
+  clusterCredentials: {}
+  cm:
+    admin.enabled: true
+    accounts.alice: apiKey, login
+    accounts.bob: apiKey, login
+    accounts.ram: apiKey, login
+    accounts.bob.enabled: false
+    accounts.automation: apiKey
+    url: https://argocd.upandrunning.local
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: Ov23liHW1rumhw3U5EPn
+            clientSecret: eb4f8e558d20efed03fe12d2970f252ca57ba2d7
+            # redirectURI: https://argocd.upandrunning.local/api/dex/callback
+            orgs:
+            - name: VFG-VBPS-PPE
+    rbac.policy.csv: |
+      g, alice, role:admin
 server:
   ingress:
     enabled: true

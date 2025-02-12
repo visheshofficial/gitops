@@ -2,3 +2,7 @@
 .terraform.lock.hcl
 terraform.tfstate.backup
 terraform.tfstate
+/Users/bhagatv/work/repository/visheshofficial/gitops/argocd/1-local-setup/2-argocd-install-using-helm-and-tf/values.yaml
+argocd-local-m1.2024-11-27.private-key.pem
+*.pem
+sensetive

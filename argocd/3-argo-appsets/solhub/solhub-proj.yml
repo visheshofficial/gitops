@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: solhub
+  namespace: argocd
+spec:
+  # Allows all source repositories
+  sourceRepos:
+    - '*'
+  # Allows deployment to any cluster and namespace
+  destinations:
+    - server: '*'
+      namespace: '*'
+
+  # Allows any cluster-scoped and namespace-scoped resources
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

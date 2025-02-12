@@ -9,7 +9,7 @@ provider "helm" {
 }
 
 resource "helm_release" "argocd" {
-  name       = "argocd"
+  name       = "argo-cd-local"
   namespace  = "argocd"
   chart      = "argo-cd"
   repository = "https://argoproj.github.io/argo-helm"
@@ -17,5 +17,13 @@ resource "helm_release" "argocd" {
 
   create_namespace = true
 
-  values = [file("values.yaml")]
+  # values = [file("values.yaml")]
+  values = [templatefile("values.tpl", {
+    GH_CLIENT_ID     = var.KIND_GH_CLIENT_ID,
+    GH_CLIENT_SECRET = var.KIND_GH_CLIENT_SECRET
+    ORG_NAME         = "VFG-VBPS-PPE"
+  })]
 }
+
+variable "KIND_GH_CLIENT_ID" {}
+variable "KIND_GH_CLIENT_SECRET" {}

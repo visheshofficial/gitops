@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: solhub-backend-services
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/VFG-VBPS-PPE/solhub-be-charts.git
+              revision: master
+              files:
+                - path: configurations/*/*/values.yaml
+                - path: configurations/*/*/chart-config.yaml
+          - clusters:
+              selector:
+                matchLabels:
+                  environment: dev
+  template:
+    metadata:
+      name: '{{ index .path.segments 2 }}-{{ index .path.segments 1 }}-backend'
+      namespace: argocd
+    spec:
+      project: solhub
+      sources:
+        - repoURL: https://nexus.tools.aws.vodafone.com/repository/iot-solhub-helm
+          chart: api-helm
+          targetRevision: '{{.files["chart-config.yaml"].chartVersion}}'
+          helm:
+            valueFiles:
+              - $valuesRef/'{{.path.path}}/values.yaml'
+        - repoURL: https://github.com/VFG-VBPS-PPE/solhub-be-charts.git
+          targetRevision: master
+          ref: valuesRef
+      destination:
+        server: '{{.server}}'
+        namespace: '{{ index .path.segments 2 }}'

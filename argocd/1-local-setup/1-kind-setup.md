@@ -3,7 +3,7 @@
 ## Setup cluster
 
 ```bash
-kind create cluster --config 1-kind-cluster/kind-example-config.yaml
+kind create cluster --config 1-kind-cluster/vind.yaml
 kubectl label node vind-control-plane node.kubernetes.io/exclude-from-external-load-balancers-
 ```
 
@@ -17,52 +17,6 @@ kubectl cluster-info --context kind-vind
 
 ```bash
 kind delete cluster -n vind
-```
-
-## Deploy Argo-cd using helm
-
- cd tf
- export ARGO_PWD=ethjgfvbm*36!
- htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'
- terraform init
- terraform apply
-
-## Check installation
-
-### Helm checks
-
-```bash
- # list helm charts
- helm list -A
- # get notes from the chart
- helm get notes argocd -n argocd
- # get values supplied during installation.
- helm get values argocd -n argocd
- # Get all values
- helm get values argocd -n argocd --all > all-values.yaml
- helm show values argo-cd/argo-cd 
-
- # Get manifest
- helm get manifest argocd -n argocd > manifest.yaml
- # 
- helm history argocd -n argocd 
-```
-
-### K8S checks
-
-```bash
-kubectl get pods -n argocd
-```
-
-## Accesing Argocd UI
-
-```bash
-# Port forwarding for accesing locally
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-# https://localhost:8080/
-
-# Get admin credentials
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
 ## Kind Loadbalancer
@@ -126,17 +80,3 @@ nodes:
     protocol: TCP
 EOF
 ```
-
-### Accesing UI uisng URL
-
-- this one is not correct. don't map URL to localhost as we are using LoadBalancer IP
-  - <https://argocd.upandrunning.local:8080/> == <https://127.0.0.1:8080/>
-
-- Put the IP of load balancer in the host file.
-  - 172.18.0.5 argocd.upandrunning.local
-
-###
-
-curl -k -H "Content-Type: application/json" \
-     <https://argocd.upandrunning.local/api/v1/session> \
-     -d '{"username":"admin","password":"8hESwAhE9re?+rlCU=ow"}'

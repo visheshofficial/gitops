@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: solhub-backend-services
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  # Outer Matrix: merges the result of an inner matrix with clusters
+  generators:
+    - matrix:
+        generators:
+          - matrix:
+              # INNER matrix: merges "files" for chart-config.yaml & "directories" for values.yaml
+              generators:
+                - git:
+                    repoURL: https://github.com/VFG-VBPS-PPE/solhub-be-charts.git
+                    revision: master
+                    files:
+                      - path: 'configurations/*/*/chart-config.yaml'
+                        name: chartCfg
+                - git:
+                    repoURL: https://github.com/VFG-VBPS-PPE/solhub-be-charts.git
+                    revision: master
+                    directories:
+                      - path: 'configurations/*/*/values.yaml'
+          - clusters:
+              selector:
+                matchLabels:
+                  environment: dev # or your label
+
+  template:
+    metadata:
+      # Use data from the inner matrix + cluster generator
+      name: '{{ .files.chartCfg.content.serviceName | default "unknown" }}-{{ .cluster.name }}'
+    spec:
+      project: solhub
+
+      sources:
+        - repoURL: https://nexus.tools.aws.vodafone.com/repository/iot-solhub-helm
+          chart: api-helm
+          targetRevision: '{{ .files.chartCfg.content.chartVersion | default "1.16.9" }}'
+          helm:
+            # The second generator in the inner matrix provides .path.path for values.yaml
+            valueFiles:
+              - '{{ .path.path }}'
+        - repoURL: https://github.com/VFG-VBPS-PPE/solhub-be-charts.git
+          targetRevision: master
+          ref: valuesRef
+
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ .files.chartCfg.content.namespace | default "dev" }}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

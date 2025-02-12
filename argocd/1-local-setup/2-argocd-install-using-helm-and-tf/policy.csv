@@ -1,0 +1,2 @@
+p, role:admin, *, *, */*, allow
+g, bob, role:org-admin
