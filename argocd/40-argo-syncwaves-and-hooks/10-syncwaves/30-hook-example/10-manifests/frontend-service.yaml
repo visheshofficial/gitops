@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: argo-syncwaves-and-hooks
+  annotations:
+    argocd.argoproj.io/sync-wave: '2'
+spec:
+  selector:
+    tier: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
