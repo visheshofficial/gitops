@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/todo
-    repoURL: https://github.com/redhat-developer-demos/openshift-gitops-examples
-    targetRevision: minikube
+    path: argocd/40-argo-syncwaves-and-hooks/10-syncwaves/10-todo-app
+    repoURL: https://github.com/visheshofficial/gitops
+    targetRevision: master
   syncPolicy:
     automated:
       prune: true
