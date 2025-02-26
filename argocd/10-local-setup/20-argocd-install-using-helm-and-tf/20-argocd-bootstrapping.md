@@ -5,7 +5,7 @@
 ```bash
 cd 2-argocd-install-using-helm-and-tf
 terraform init
-tf apply -var "KIND_GH_CLIENT_ID=$KIND_GH_CLIENT_ID" -var "KIND_GH_CLIENT_SECRET=$KIND_GH_CLIENT_SECRET" -auto-approve
+terraform apply -var "KIND_GH_CLIENT_ID=$KIND_GH_CLIENT_ID" -var "KIND_GH_CLIENT_SECRET=$KIND_GH_CLIENT_SECRET" -auto-approve
 ```
 
 ## Check installation

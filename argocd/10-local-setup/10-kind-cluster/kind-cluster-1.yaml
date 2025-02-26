@@ -1,0 +1,31 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: kind-cluster-1
+
+nodes:
+  - role: control-plane # This is the control plane node. This is the master node of the cluster.
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings: # this is not working. The ports are not getting mapped to the host machine.
+      - containerPort: 30080
+        hostPort: 30080
+        protocol: TCP
+    #   - containerPort: 443
+    #     hostPort: 443
+    #     protocol: TCP
+  # Worker nodes - 2 . This is the number of worker nodes in the cluster. More worker nodes can be added by adding more entries here.
+  - role: worker
+  - role: worker
+# kind: Cluster
+# apiVersion: kind.x-k8s.io/v1alpha4
+# name: kargo-quickstart
+# nodes:
+#   - extraPortMappings:
+#       - containerPort: 31443 # Argo CD dashboard
+#         hostPort: 31443
+#       - containerPort: 31444 # Kargo dashboard
+#         hostPort: 31444

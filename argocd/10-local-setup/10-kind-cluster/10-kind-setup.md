@@ -3,20 +3,20 @@
 ## Setup cluster
 
 ```bash
-kind create cluster --config 1-kind-cluster/vind.yaml
-kubectl label node vind-control-plane node.kubernetes.io/exclude-from-external-load-balancers-
+kind create cluster --config 1-kind-cluster/kind-cluster-1.yaml
+kubectl label node kind-cluster-1-control-plane node.kubernetes.io/exclude-from-external-load-balancers-
 ```
 
 ## Get cluster info
 
 ```bash
-kubectl cluster-info --context kind-vind
+kubectl cluster-info --context kind-kind-cluster-1
 ```
 
 ## Delete cluster
 
 ```bash
-kind delete cluster -n vind
+kind delete cluster -n kind-cluster-1
 ```
 
 ## Kind Loadbalancer
