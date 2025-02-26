@@ -1,8 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-example
+  name: argo-syncwaves-and-hooks-application
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    link.argocd.argoproj.io/external-link: http://my-grafana.example.com/pre-generated-link
+
 spec:
   project: default
   sources:
