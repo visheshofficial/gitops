@@ -6,3 +6,7 @@ terraform.tfstate
 argocd-local-m1.2024-11-27.private-key.pem
 *.pem
 sensetive
+sensetive*
+.temp
+access-key
+secret-access-key
